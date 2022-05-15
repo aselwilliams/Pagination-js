@@ -45,6 +45,24 @@ function loadToTable(data) {
   }
 }
 
+function handleNumClick(clickedLink, prevBtn, nextBtn){
+    clickedLink.parenElement.classList='active';
+    let clickedPageNum=parseInt(clickedLink.innerText)
+    const url=getUrl((clickedLinkPageNumber*10)-10);
+    getData(url)
+}
+function handlePrev(){
+
+}
+function handleNext(){
+
+}
+function disablePrev(){
+
+}
+function enablePrev(){
+
+}
 function init() {
   let url = getUrl();
   getData(url);
@@ -52,81 +70,29 @@ function init() {
 init();
 
 //handle pagination
+let activePageNum
+let clickedLink
+let nextPage
 
-//  function renderData(){
-//      getData()
-//      tableBody=''
-//      data.filter((row, index)=>{
-//          let start = (currentPage-1) * pageSize //0
-//          let end = currentPage * pageSize //5
 
-//             for (let i=0; i<data.length; i++){
-//                 tableBody.innerHTML+=`
-//                  <tr>
-//                      <td>${i+1}</td>
-//                      <td>${data[i].author}</td>
-//                      <td>${data[i].title}</td>
-//                      <td>${data[i].points}</td>
-//                      <td>${data[i].created_at}</td>
-//                  </tr>`
-//             }
+pageLinks.forEach((el)=>{
+    element.addEventListener('click', function(){
+       activeLink=document.querySelector('.active') 
 
-//         })
+       //get active page number
+       if((this.innerText==='prev' && activePageNum===1) ||(this.innerText==='next' && activePageNum===10)){
+           return
+       }
+       //update active class
+       activeLink.classList='effect'
+       activeLink.classList.remove('active')
 
-//     }
-
-//     // const lastPage=Math.ceil(data.length/limit)
-//     // const start=pageNumber*limit;
-//     // const end= (pageNumber+1) *limit
-
-//     if(pageNumber===0){
-//         prevBtn.disabled=true
-//     } else {
-//         prevBtn.disabled=false
-//     }
-//     if(pageNumber===lastPage){
-//         nextBtn.disabled=true
-//     } else {
-//         nextBtn.disabled=false;
-//     }
-
-//     const partialData= data.slice(start, end)
-//     console.log(partialData)
-
-// renderData()
-// fetch('https://jsonplaceholder.typicode.com/comments')
-// .then(response => response.json())
-// .then(data =>{
-//     console.log(data)
-//     // const data=data
-//    for (let i=0; i<data.length; i++){
-//        tableBody.innerHTML+=`
-//         <tr>
-//             <td>${data[i].id}</td>
-//             <td>${data[i].email}</td>
-//             <td>${data[i].name}</td>
-//             <td>${data[i].postId}</td>
-//         </tr>`
-//    }
-
-// })
-
-// let pageNumber=0;
-// let limit=20;
-// const lastPage=Math.ceil(data.length/limit)
-// const start=pageNumber*limit;
-// const end= (pageNumber+1) *limit
-
-// if(pageNumber===0){
-//     prevBtn.disabled=true
-// } else {
-//     prevBtn.disabled=false
-// }
-// if(pageNumber===lastPage){
-//     nextBtn.disabled=true
-// } else {
-//     nextBtn.disabled=false;
-// }
-
-// const partialData= data.slice(start, end)
-// console.log(partialData)
+       if(this.innerText==='prev') {
+           handlePrev()
+       } else if(this.innerText==='next'){
+           handleNext()
+       }else{
+           handleNumClick(this, prevBtn, nextBtn)
+       }
+    })
+})
