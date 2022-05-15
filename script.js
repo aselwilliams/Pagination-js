@@ -1,13 +1,13 @@
 let tableBody = document.querySelector(".info");
-const nextBtn = document.querySelector(".next");
-const prevBtn = document.querySelector(".prev");
+const lastBtn = document.querySelector(".last");
+const firstBtn = document.querySelector(".first");
 const pageLinks=document.querySelectorAll('a')
 let data = [];
-let pageSize = 5;
-let currentPage = 1;
+let limit = 15
 
-function getUrl(start = 0) {
-  return "https://api.coinlore.com/api/tickers/?start=" + start + "&limit=10";
+
+function getUrl(start=0) {
+  return "https://api.coinlore.com/api/tickers/?start=" + start + "&limit="+ limit;
 }
 
 function getData(url) {
@@ -32,8 +32,10 @@ function loadToTable(data) {
     coinPrice.push(coin.price_usd);
     coin24Change.push(coin.percent_change_24h);
   });
-  let html = "";
+
+  tableBody.innerHTML=''
   for (let i = 0; i < coinName.length; i++) {
+      
     tableBody.innerHTML += `
     <tr>
         <td>${i + 1}</td>
@@ -44,89 +46,128 @@ function loadToTable(data) {
     </tr>`;
   }
 }
+function init() {
+    let url = getUrl();
+    getData(url);
+  }
+  init();
 
-function handleNumClick(clickedLink, prevBtn, nextBtn){
-    clickedLink.parenElement.classList='active';
+function handleNumClick(clickedLink){
+    clickedLink.parentElement.classList='active';
     let clickedPageNum=parseInt(clickedLink.innerText)
-    const url=getUrl((clickedLinkPageNumber*10)-10);
+    const url=getUrl((clickedPageNum*limit)-limit);
     getData(url)
 
-    switch(clickedPageNum){
-        case 1:
-            disablePrev(prevBtn);
-            if(nextBtn.className.indexOf('disabled') !==-1){
-                enableNext(nextBtn)
-            }
-            break;
-        case 10:
-        disableNext()
-            if(prevBtn.className.indexOf('disabled')!==-1){
-                enablePrev(prevBtn)
-            }
-            break;
-        default:
-            if(prevBtn.classList.indexOf('disabled')!==-1){
-                enablePrev(prevBtn)
-            }
-            if(nextBtn.classList.indexOf('disabled')!==-1){
-              enableNext(nextBtn)  
-            }
-            break;
-    }
+    // switch(clickedPageNum){
+    //     case 1:
+    //         disablePrev(prevBtn);
+    //         if(nextBtn.className.indexOf('disabled') !==-1){ //if next btn has a disabled class,it should give num
+    //             enableNext(nextBtn)
+    //         }
+    //         break;
+    //     case 10:
+    //     disableNext()
+    //         if(prevBtn.className.indexOf('disabled')!==-1){
+    //             enablePrev(prevBtn)
+    //         }
+    //         break;
+    //     default:
+    //         if(prevBtn.className.indexOf('disabled')!==-1){
+    //             enablePrev(prevBtn)
+    //         }
+    //         if(nextBtn.className.indexOf('disabled')!==-1){
+    //           enableNext(nextBtn)  
+    //         }
+    //         break;
+    // }
 }
-function handlePrev(){
+// function handlePrev(activePageNum,prevBtn,nextBtn){
+//     //move to prev page
+// let prevPage=document.querySelectorAll('li')[activePageNum - 1]
+// prevPage.classList='active'
+// url= getUrl(((activePageNum-1)*10)-10);
+// getData(url)
 
-}
-function handleNext(){
+// if(activePageNum===10){
 
-}
-function disablePrev(prevBtn){
-  prevBtn.classList='disabled prev'
-  prevBtn.classList.remove('effect');
-}
-function enablePrev(prevBtn){
-    prevBtn.classList='effect prev'
-    prevBtn.classList.remove('disabled');
-}
+//     // enableNext(nextBtn)
+// }
+// if(activePageNum-1===1){
+//     disablePrev(prevBtn)
+// }
+// }
 
-function disableNext(nextBtn){
-    nextBtn.classList='disabled next'
-    nextBtn.classList.remove('effect');
-  }
-  function enableNext(nextBtn){
-      nextBtn.classList='effect next'
-      nextBtn.classList.remove('disabled');
-  }
-function init() {
-  let url = getUrl();
-  getData(url);
-}
-init();
 
-//handle pagination
+// function handleNext(activePageNum,prevBtn, nextBtn){
+// //move to next page
+// let nextPage= document.querySelectorAll('li')[activePageNum+1];
+// nextPage.classList='active'
+// url= getUrl(((activePageNum+1)*10)-10);
+// getData(url)
+
+// if(activePageNum===1){
+//     enablePrev(prevBtn)
+// }
+// if(activePageNum+1===10){
+//     disableNext(nextBtn)
+// }
+// }
+// function disablePrev(prevBtn){
+//   prevBtn.classList='disabled page-item prev'
+
+// }
+// function enablePrev(prevBtn){
+//     prevBtn.classList='page-item prev'
+//     prevBtn.classList.remove('disabled');
+// }
+
+// function disableNext(nextBtn){
+//     nextBtn.classList='disabled page-item next'
+//     nextBtn.classList.add('disabled')
+//   }
+//   function enableNext(nextBtn){
+//       nextBtn.classList='page-item next'
+//       nextBtn.classList.remove('disabled');
+//   }
+
+
+// //handle pagination
 let activePageNum
 let clickedLink
 let nextPage
 
 
 pageLinks.forEach((el)=>{
-    element.addEventListener('click', function(){
+    el.addEventListener('click', function(){
        activeLink=document.querySelector('.active') 
 
        //get active page number
-       if((this.innerText==='prev' && activePageNum===1) ||(this.innerText==='next' && activePageNum===10)){
-           return
-       }
+    //    activePageNum=parseInt(activeLink.innerText)
+    //    if((this.innerText==='<<' && activePageNum===1) || (this.innerText==='>>' && activePageNum===10)){
+    //        return;
+    //    }
        //update active class
-       activeLink.classList='effect'
+       activeLink.classList='page-item'
        activeLink.classList.remove('active')
 
-       if(this.innerText==='prev') {
-           handlePrev()
-       } else if(this.innerText==='next'){
-           handleNext()
-       }else{
-           handleNumClick(this, prevBtn, nextBtn)
-       }
+       handleNumClick(this)
+
+    //    if(this.innerText==='<<') {
+    //     activePageNum=parseInt(activelink.innerText)
+    //     url= getUrl(((activePageNum-1)*10)-10);
+    //         getData(url)
+    //    } else if(this.innerText==='>>'){
+    //     activePageNum=10
+    //     url= getUrl(((activePageNum)*10)-10);
+    //     getData(url)
+    //     //    handleNext(activePageNum, prevBtn,nextBtn)
+    //    }else{
+    //        handleNumClick(this)
+    //    }
     })
+})
+lastBtn.addEventListener('click', function(){
+    activePageNum=10
+    url= getUrl(((activePageNum)*limit)-limit);
+        getData(url)
 })
