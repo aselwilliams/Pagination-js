@@ -38,9 +38,8 @@ function loadToTable(data) {
       
     tableBody.innerHTML += `
     <tr>
-        <td>${i + 1}</td>
-        <td>${coinName[i]}(${coinSymbol[i]})</td>
         <td>${coinRank[i]}</td>
+        <td>${coinName[i]}(${coinSymbol[i]})</td>
         <td> $ ${coinPrice[i]}</td>
         <td>${coin24Change[i]}</td>
     </tr>`;
