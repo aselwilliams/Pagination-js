@@ -18,32 +18,32 @@ function getData(url) {
 }
 
 function loadToTable(data) {
-  let coinName = [];
-  let coinSymbol = [];
-  let coinRank = [];
-  let coinPrice = [];
-  let coin24Change = [];
-  console.log(data);
 
-  data["data"].forEach((coin) => {
-    coinName.push(coin.name);
-    coinSymbol.push(coin.symbol);
-    coinRank.push(coin.rank);
-    coinPrice.push(coin.price_usd);
-    coin24Change.push(coin.percent_change_24h);
+  data["data"].map((coin) => {
+    tableBody.innerHTML=''
+    for (let i = 0; i < data['data'].length; i++) {
+        
+      tableBody.innerHTML += `
+      <tr>
+          <td>${data['data'][i].rank}</td>
+          <td>${data['data'][i].name}(${data['data'][i].symbol})</td>
+          <td> $ ${data['data'][i].price_usd}</td>
+          <td>${data['data'][i].percent_change_24h}</td>
+      </tr>`;
+    }
   });
 
-  tableBody.innerHTML=''
-  for (let i = 0; i < coinName.length; i++) {
+//   tableBody.innerHTML=''
+//   for (let i = 0; i < coinName.length; i++) {
       
-    tableBody.innerHTML += `
-    <tr>
-        <td>${coinRank[i]}</td>
-        <td>${coinName[i]}(${coinSymbol[i]})</td>
-        <td> $ ${coinPrice[i]}</td>
-        <td>${coin24Change[i]}</td>
-    </tr>`;
-  }
+//     tableBody.innerHTML += `
+//     <tr>
+//         <td>${coinRank[i]}</td>
+//         <td>${coinName[i]}(${coinSymbol[i]})</td>
+//         <td> $ ${coinPrice[i]}</td>
+//         <td>${coin24Change[i]}</td>
+//     </tr>`;
+//   }
 }
 function init() {
     let url = getUrl();
