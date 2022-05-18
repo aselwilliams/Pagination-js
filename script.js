@@ -133,7 +133,7 @@ function handleNumClick(clickedLink){
 // //handle pagination
 let activePageNum
 let clickedLink
-let nextPage
+// let nextPage
 
 
 pageLinks.forEach((el)=>{
@@ -169,4 +169,5 @@ lastBtn.addEventListener('click', function(){
     activePageNum=10
     url= getUrl(((activePageNum)*limit)-limit);
         getData(url)
+       
 })
